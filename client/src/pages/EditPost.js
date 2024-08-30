@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Editor from "../Editor";
+import { baseUrl } from "../Urls";
 
 export default function EditPost() {
   const { id } = useParams();
@@ -11,14 +12,14 @@ export default function EditPost() {
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:4000/post/" + id).then((response) => {
+    fetch(`${baseUrl}/post/` + id).then((response) => {
       response.json().then((postInfo) => {
         setTitle(postInfo.title);
         setContent(postInfo.content);
         setSummary(postInfo.summary);
       });
     });
-  }, []);
+  }, [id]);
 
   async function updatePost(ev) {
     ev.preventDefault();
@@ -30,7 +31,7 @@ export default function EditPost() {
     if (files?.[0]) {
       data.set("file", files?.[0]);
     }
-    const response = await fetch("http://localhost:4000/post", {
+    const response = await fetch(`${baseUrl}/post`, {
       method: "PUT",
       body: data,
       credentials: "include",
