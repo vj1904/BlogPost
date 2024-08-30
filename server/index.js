@@ -26,8 +26,11 @@ mongoose
 // Routes
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/", require("./routes/postRoutes"));
+app.get("/", (req, res) => {
+  res.send("Server is up and running !");
+});
 
 // Start Server
-app.listen(4000 || process.env.PORT, () => {
-  console.log("Server running on http://localhost:4000");
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on ${process.env.PORT}`);
 });
