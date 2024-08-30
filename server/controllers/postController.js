@@ -5,6 +5,11 @@ const secret = process.env.JWT_SECRET;
 
 exports.createPost = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    console.log(req.file); // Log the file information
     const { originalname, path } = req.file;
     const parts = originalname.split(".");
     const ext = parts[parts.length - 1];

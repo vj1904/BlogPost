@@ -11,19 +11,26 @@ export default function CreatePost() {
   const [files, setFiles] = useState("");
   const [redirect, setRedirect] = useState(false);
   async function createNewPost(ev) {
+    ev.preventDefault();
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);
     data.set("content", content);
     data.set("file", files[0]);
-    ev.preventDefault();
-    const response = await fetch(`${baseUrl}/post`, {
-      method: "POST",
-      body: data,
-      credentials: "include",
-    });
-    if (response.ok) {
-      setRedirect(true);
+
+    try {
+      const response = await fetch(`${baseUrl}/post`, {
+        method: "POST",
+        body: data,
+        credentials: "include",
+      });
+      const result = await response.json();
+      console.log(result); // Log the server response
+      if (response.ok) {
+        setRedirect(true);
+      }
+    } catch (error) {
+      console.error("Error creating post:", error);
     }
   }
 
